@@ -21,24 +21,24 @@
             $content .= '<h1>' . $love['sender'] . '</h1><p>' . nl2br($love['content']) . '</p><br/><br/>';       
         }
         
-        $mailjetClient = new \Mailjet\Client($_ENV['MailjetPublicKey'], $_ENV['MailjetPrivateKey'], true, ['version' => 'v3.1']);
+        $mailjetClient = new \Mailjet\Client(getenv('MailjetPublicKey'), getenv('MailjetPrivateKey'), true, ['version' => 'v3.1']);
         $body = [
             'Messages' => [
                 [
                     'From' => [
-                        'Email' => $_ENV['MailFromEmail'],
-                        'Name' => $_ENV['MailFromName']
+                        'Email' => getenv('MailFromEmail'),
+                        'Name' => getenv('MailFromName')
                     ],
                     'To' => [
                         [
                             'Email' => $receiver['email'],
                         ],
                     ],
-                    'Subject' => $_ENV['MailSubject'],
+                    'Subject' => getenv('MailSubject'),
                     'Variables' => [
                         'content' => $content
                     ],
-                    'TemplateID' => (int)$_ENV['MailTemplateId'],
+                    'TemplateID' => (int)getenv('MailTemplateId'),
                     'TemplateLanguage' => true,
                 ]
             ]

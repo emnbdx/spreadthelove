@@ -7,9 +7,9 @@ class Repository
     public function __construct()
     {
         $this->db = new PDO(
-            'mysql:host=' . $_ENV['DbUrl'] . ';dbname=' . $_ENV['DbName'] . ';charset=utf8mb4',
-            $_ENV['DbUser'],
-            $_ENV['DbPassword']
+            'mysql:host=' . getenv('DbUrl') . ';dbname=' . getenv('DbName') . ';charset=utf8mb4',
+            getenv('DbUser'),
+            getenv('DbPassword')
         );
         $this->db->setAttribute(
             PDO::ATTR_ERRMODE,
