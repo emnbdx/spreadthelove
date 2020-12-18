@@ -1,19 +1,22 @@
 <?php
   require 'loader.php';
+  $end = new DateTime(getenv('EndDate')) < new DateTime('NOW');
 
-  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if(isset($_POST['to']) && isset($_POST['from']) && isset($_POST['message'])) {
-      $repo->insertLove($_POST['to'], $_POST['from'], $_POST['message']);
-
-      $_SESSION['success'] = true;
-
-      header('Location:/');
-      exit();
+  if(!$end) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      if(isset($_POST['to']) && isset($_POST['from']) && isset($_POST['message'])) {
+        $repo->insertLove($_POST['to'], $_POST['from'], $_POST['message']);
+  
+        $_SESSION['success'] = true;
+  
+        header('Location:/');
+        exit();
+      } else {
+        $_SESSION['error'] = true;
+      }
     } else {
-      $_SESSION['error'] = true;
+      $receivers = $repo->getReceivers();
     }
-  } else {
-    $receivers = $repo->getReceivers();
   }
 ?>
 
@@ -62,7 +65,7 @@
 
     <div class="container h-100">
       <div class="row h-100">
-        <div class="form-container col-12 my-auto">
+        <div class="form-container col-12 my-auto<?php echo $end ? " text-center" : "" ?>">
           <?php if(isset($_SESSION['success'])) { 
             unset($_SESSION['success']);
           ?>
@@ -78,28 +81,32 @@
             </div>
           <?php } ?>
 
-          <form method="POST"> 
-            <div class="form-group">
-              <label for="to">A qui veux-tu envoyer du love ?</label>   
-              <select id="to" name="to" class="form-control" required>
-                  <option></option>
-                  <?php foreach($receivers as $receiver) { ?>
-                    <option value="<?php echo $receiver['id'] ?>"><?php echo $receiver['name'] ?></option>
-                  <?php } ?>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="from">De la part de</label>   
-              <input type="text" id="from" name="from" class="form-control" required/>
-            </div>
-            <div class="form-group">
-              <label for="message">Ton message</label>   
-              <textarea id="message" name="message" rows="5" class="form-control" required></textarea>
-            </div>
-            <div class="form-group">
-              <input type="submit" value="Envoyer" class="btn btn-primary" />
-            </div>
-          </form>
+          <?php if($end) { ?>
+            <img src="/images/thats-all-folks.png" />
+          <?php } else { ?>
+            <form method="POST"> 
+              <div class="form-group">
+                <label for="to">A qui veux-tu envoyer du love ?</label>   
+                <select id="to" name="to" class="form-control" required>
+                    <option></option>
+                    <?php foreach($receivers as $receiver) { ?>
+                      <option value="<?php echo $receiver['id'] ?>"><?php echo $receiver['name'] ?></option>
+                    <?php } ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="from">De la part de</label>   
+                <input type="text" id="from" name="from" class="form-control" required/>
+              </div>
+              <div class="form-group">
+                <label for="message">Ton message</label>   
+                <textarea id="message" name="message" rows="5" class="form-control" required></textarea>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="Envoyer" class="btn btn-primary" />
+              </div>
+            </form>
+          <?php } ?>
         </div>
       </div>
     </div>

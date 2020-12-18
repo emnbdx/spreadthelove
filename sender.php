@@ -18,7 +18,11 @@
 
         $content = '';
         foreach ($loves as $love) {
-            $content .= '<h1>' . $love['sender'] . '</h1><p>' . nl2br($love['content']) . '</p><br/><br/>';       
+            $content .= '<p style="font-size:30px;text-align:left;margin:0;padding:0">&ldquo;</p>' . 
+            '<p style="font-size:16px;text-align:center;margin:0;padding:0"><i>' . nl2br($love['content']) . '</i></p>' . 
+            '<p style="font-size:30px;text-align:right;margin:0;padding:0">&rdquo;</p>' . 
+            '<p style="ont-size:16px;font-weight:bold;text-align:right;"">' . $love['sender'] . '</p>' .
+            '<br/><img src="http://ageheureux.a.g.pic.centerblog.net/guirlandes-0048_1.gif" width="100%"/><br/>';
         }
         
         $mailjetClient = new \Mailjet\Client(getenv('MailjetPublicKey'), getenv('MailjetPrivateKey'), true, ['version' => 'v3.1']);
