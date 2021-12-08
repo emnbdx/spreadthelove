@@ -9,7 +9,11 @@ class Repository
         $this->db = new PDO(
             'mysql:host=' . getenv('DbUrl') . ';dbname=' . getenv('DbName') . ';charset=utf8mb4',
             getenv('DbUser'),
-            getenv('DbPassword')
+            getenv('DbPassword'),
+            array(
+                PDO::MYSQL_ATTR_SSL_CA => '/path/to/ssl-cert.pem',
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            )
         );
         $this->db->setAttribute(
             PDO::ATTR_ERRMODE,
